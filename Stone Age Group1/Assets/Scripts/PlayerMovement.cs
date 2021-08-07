@@ -9,13 +9,20 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerJumpForce;
 
+    [SerializeField] private GameObject animObject;
+
+    private SpriteRenderer spriteRenderer;
+
     private float currentPlayerSpeed; // она по дефолту = 0, в нее сохраняем 
     private Rigidbody2D rb;
-    private bool groundCheck;
+    private bool groundCheck; // проверка земли
+    
+
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = animObject.GetComponent<SpriteRenderer>(); // плучаем ссылку
     }
 
     // Движение
@@ -31,19 +38,45 @@ public class PlayerMovement : MonoBehaviour
     public void RightMove()
     {
         currentPlayerSpeed = playerSpeed;
-        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        spriteRenderer.flipX = false;
+      
     }
     public void LeftMove()
     {
         currentPlayerSpeed = -playerSpeed;
-        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        spriteRenderer.flipX = true;
+        
     }
+
     public void StopMove()
     {
         currentPlayerSpeed = 0f;
     }
     public void Jump()
     {
-
+        if (groundCheck)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, playerJumpForce); // rb.velocity.x - не затрагиваем ихменение ИКСА
+            groundCheck = false;
+        }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        groundCheck = true;
+    }
+
+
+
+
+    // движение
+    //if (transform.localScale.x > 0)
+    //{
+    //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+    //}
+
+    //if (transform.localScale.x < 0)
+    //{
+    //    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+    //}
 }
