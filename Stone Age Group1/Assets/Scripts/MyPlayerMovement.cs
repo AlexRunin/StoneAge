@@ -38,6 +38,12 @@ public class MyPlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(currentPlayerSpeed)); // указываем параметр и значениу
     }
 
+    public void Attack()
+    {
+        Debug.Log("Attack");
+        animator.SetTrigger("Attack");
+    }
+
 
     public void RightMove()
     {
@@ -65,6 +71,11 @@ public class MyPlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, playerJumpForce); // rb.velocity.x - не затрагиваем ихменение ИКСА
             groundCheck = false;
         }
+    }
+
+    public void Health()
+    { 
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
